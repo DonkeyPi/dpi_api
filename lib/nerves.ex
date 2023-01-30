@@ -1,7 +1,7 @@
 defmodule Dpi.Api.Nerves do
   alias Dpi.Api.Env
 
-  def on(), do: Env.in_nerves()
+  def on(), do: Env.nerves?()
 
   def sync!() do
     if on() do
