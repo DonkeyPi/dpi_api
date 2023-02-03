@@ -19,7 +19,7 @@ defmodule Dpi.Api.Session do
 
   defp rpc(session) do
     rpc(:dpi_console@localhost, session)
-    rpc(:dpi_hmi@localhost, session)
+    rpc(:dpi_manager@localhost, session)
   end
 
   defp rpc(node, session) do
