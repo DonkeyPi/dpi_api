@@ -1,4 +1,5 @@
 defmodule Dpi.Api.Session do
+  alias Dpi.Api.Nodes
   Dpi.Api.Bus
   use Agent
 
@@ -18,13 +19,10 @@ defmodule Dpi.Api.Session do
   def logout(), do: rpc(nil)
 
   defp rpc(session) do
-    rpc(:dpi_console@localhost, session)
-    rpc(:dpi_manager@localhost, session)
-  end
-
-  defp rpc(node, session) do
-    # returns {:badrpc, reason}
-    :rpc.call(node, Dpi.Api.Session, :put, [session])
-    :rpc.call(node, Dpi.Api.Bus, :dispatch!, [:session, session])
+    Nodes.foreach(fn node ->
+      # returns {:badrpc, reason}
+      :rpc.call(node, Dpi.Api.Session, :put, [session])
+      :rpc.call(node, Dpi.Api.Bus, :dispatch!, [:session, session])
+    end)
   end
 end
